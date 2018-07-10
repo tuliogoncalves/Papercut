@@ -42,6 +42,7 @@ namespace Papercut.Service.Infrastructure.WebServer
     internal class WebStartup
     {
         public static ILifetimeScope Scope { get; set; }
+
         public static IWebHost Start(ushort httpPort, CancellationToken cancellation)
         {
             var hostBuilder = new WebHostBuilder();
@@ -97,11 +98,20 @@ namespace Papercut.Service.Infrastructure.WebServer
                         });
                 });
 
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            builder.Update(Scope.ComponentRegistry);
+            if (Scope != null)
+            {
+                Scope = Scope.BeginLifetimeScope(
+                    cb =>
+                    {
+                        cb.Populate(services);
+                    });
+            }
+            else
+            {
+                var builder = new ContainerBuilder();
+                builder.Populate(services);
+                Scope = builder.Build();
+            }
 
             return new AutofacServiceProvider(Scope);
         }

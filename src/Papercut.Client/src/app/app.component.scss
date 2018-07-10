@@ -1,12 +1,24 @@
-.sidenav-container {
-  height: 100%;
-}
-
-.sidenav {
-  width: 200px;
+.message-list {
   box-shadow: 3px 0 6px rgba(0,0,0,.24);
 
-  .mat-list-item a {
-    font-size: 0.75em;
+  mat-list-item {
+    &.selected {
+      background-color: rgba(100,100,100, 0.5);
+      font-weight: bolder;
+    }
+
+    a {
+      font-size: 0.75em;
+    }
+  }
+}
+
+.layout-margin {
+  margin: 8px;
+}
+
+.message-detail-content {
+  .mat-tab-body-content {
+    padding: 8px;
   }
 }

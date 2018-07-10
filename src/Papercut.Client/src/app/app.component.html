@@ -1,33 +1,49 @@
-<mat-sidenav-container class="sidenav-container" flex="25">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
+<mat-drawer-container class="main-container" autosize fxFlexFill>
+  <mat-drawer #drawer class="message-list" fxLayout="column"
     fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Messages</mat-toolbar>
     <mat-nav-list>
-        <mat-list-item *ngFor="let message of messages">
-            <a matLine href="..." [matTooltip]="message.subject">{{ message.subject }}</a>
-            <button mat-icon-button (click)="showInfo(link)">
+        <mat-list-item *ngFor="let message of messages" [ngClass]="{'selected': message.isSelected}"
+        (click)="selectMessage(message)"
+        [matTooltip]="message.subject">
+            <a matLine>{{ message.subject }}</a>
+            <!-- <button mat-icon-button (click)="showInfo(link)">
                <mat-icon>info</mat-icon>
-            </button>
+            </button> -->
          </mat-list-item>
     </mat-nav-list>
-  </mat-sidenav>
+  </mat-drawer>
 
-  <mat-sidenav-content flex="75">
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">Messages</mat-icon>
-      </button>
-      <span>Papercut</span>
-    </mat-toolbar>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <div class="message-detail" fxLayout="column" fxFlexFill *ngIf="message">
+    <mat-toolbar color="primary" fxLayout="row">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon">Messages</mat-icon>
+        </button>
+        <span>Papercut</span>
+      </mat-toolbar>
+
+      <mat-card class="message-card layout-margin">{{ message.subject }}</mat-card>
+
+      <div fxLayout="column" class="message-detail-content">
+        <mat-tab-group>
+          <mat-tab label="Message">
+            <h1>Some tab content</h1>
+            <p>...</p>
+          </mat-tab>
+          <mat-tab label="Detail">
+            <h1>Some more tab content</h1>
+            <p>...</p>
+          </mat-tab>
+        </mat-tab-group>
+
+      </div>
+  </div>
+</mat-drawer-container>
