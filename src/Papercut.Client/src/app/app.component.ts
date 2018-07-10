@@ -46,7 +46,9 @@ export class AppComponent {
     }
 
     public getSelected(): MessageItemExtended[] {
-      if (!this.messages) return new Array<MessageItemExtended>();
+      if (!this.messages) {
+        return new Array<MessageItemExtended>();
+      }
 
       return this.messages.filter(message => message.isSelected);
     }
